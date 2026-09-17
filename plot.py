@@ -4,22 +4,22 @@
 # ///
 
 """
-Read the file in data/, make one picture, save it to out/.
+Read the GBIF bird observation data, make one picture, and save it to out/.
 
     uv run plot.py
 
-Three parts, and you will replace all three: rows() reads the file the way *your*
-file needs reading, the loop in main() picks the numbers out of it, and the plot at
-the bottom is the transformation you chose. Print before you plot.
+The data contains bird occurrence records from GBIF.
+This script counts how many records belong to each bird species
+and plots the 10 most frequently recorded species.
 """
 
-import csv
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-FILE = "hko-daily-mean-temperature-2026.csv"   # CHANGE ME: the same name as in fetch.py
-PICTURE = "plot.png"                           # what goes into out/, and into the README
+FILE = "gbif-bird-observations.json"
+PICTURE = "plot.png"
 
 HERE = Path(__file__).parent
 DATA = HERE / "data" / FILE
@@ -27,39 +27,58 @@ OUT = HERE / "out"
 
 
 def rows(path):
-    """The file as a list of lists, one per line. The Observatory puts three lines
-    of titles above the table and a legend below it, so keep only the lines that
-    start with a year."""
-    kept = []
-    with path.open(encoding="utf-8-sig", newline="") as handle:
-        for line in csv.reader(handle):
-            if line and line[0].isdigit():
-                kept.append(line)
-    return kept
+    """Read the GBIF JSON file and return the occurrence records."""
+    with path.open(encoding="utf-8") as handle:
+        data = json.load(handle)
+    return data["results"]
 
 
 def main():
     table = rows(DATA)
-    print(f"{DATA.name}: {len(table)} rows. The first one: {table[0]}")
 
-    days, values = [], []
-    for i, (year, month, day, value, quality) in enumerate(table):   # the loop over the numbers
-        if value == "***":                   # the Observatory's word for "missing"
-            continue
-        days.append(i + 1)
-        values.append(float(value))          # it arrived as text; make it a number
-    print(f"{len(values)} values, from {min(values)} to {max(values)}")
+    # Print the first row, one value, and its type before plotting.
+    print(f"{DATA.name}: {len(table)} rows.")
+    print("The first row:", table[0])
+    print("One value:", table[0].get("species"))
+    print("Type:", type(table[0].get("species")))
 
-    fig, ax = plt.subplots(figsize=(10, 4))
-    ax.plot(days, values, color="#d6591d", linewidth=1.5)
-    ax.set_xlabel("day of 2026")
-    ax.set_ylabel("daily mean temperature, °C")
-    ax.set_title("Hong Kong Observatory, 2026 so far")
+    # Count observations for each bird species.
+    counts = {}
+
+    for row in table:
+        species = row.get("species")
+
+        if species:
+            counts[species] = counts.get(species, 0) + 1
+
+    top_species = sorted(
+        counts.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )[:10]
+
+    names = [item[0] for item in top_species]
+    values = [item[1] for item in top_species]
+
+    print(f"{len(counts)} different species found.")
+    print("Top 10 species:", top_species)
+
+    # Make the picture.
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    ax.barh(names[::-1], values[::-1])
+
+    ax.set_xlabel("Number of observations")
+    ax.set_ylabel("Bird species")
+    ax.set_title("Top 10 Bird Species in GBIF Occurrence Records")
+
     fig.tight_layout()
 
     OUT.mkdir(exist_ok=True)
     fig.savefig(OUT / PICTURE, dpi=150)
+
     print(f"saved out/{PICTURE}")
+
     plt.show()
 
 
