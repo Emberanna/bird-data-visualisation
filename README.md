@@ -1,10 +1,12 @@
 # Bird Observations
 
-![Top 10 bird species in GBIF occurrence records](out/plot.png)
+![Bird species ripple visualization](out/ripple.png)
 
 ## The phenomenon
 
-Bird observations are records of birds reported or collected in different places. I chose this phenomenon because bird species can be compared through numerical data, and the differences between species can be shown clearly in a chart. I wanted to see which bird species appeared most frequently in the GBIF occurrence records used for this project. The picture focuses on the number of observation records for each species. A higher bar means that the species appeared in more records in this dataset.
+Bird observations are records of birds reported or collected in different places. I chose this phenomenon because bird species can be compared through numerical data, and differences between species can be transformed into visual patterns.
+
+This project explores the frequency of bird species recorded in GBIF occurrence data. Instead of presenting the records as a traditional chart, the visualization transforms species observation counts into ripple patterns, allowing viewers to perceive differences between species through shape and structure.
 
 ## The source
 
@@ -12,17 +14,21 @@ The data comes from the Global Biodiversity Information Facility (GBIF) Occurren
 
 https://api.gbif.org/v1/occurrence/search?taxonKey=212&limit=300
 
-The query asks for bird records by using the bird taxon key 212. It requests up to 300 occurrence records. Each row in the JSON results represents one occurrence record. The records contain information such as the scientific name of the species. The number of observations is a count of records, not the number of individual birds. There is no measurement unit because the values represent record counts.
+The query uses the bird taxon key 212 and retrieves up to 300 bird occurrence records. Each record represents one observation event and contains information such as species name and occurrence details.
+
+The number of observations represents the number of recorded occurrence records, not the number of individual birds. The dataset does not measure bird population size.
 
 ## What the picture shows
 
-The picture shows the ten bird species with the highest number of occurrence records in the downloaded GBIF results. The bars are arranged from the lowest value at the bottom to the highest value at the top. The chart makes it easy to compare the frequency of the recorded species.
+The picture shows the most frequently recorded bird species in the downloaded GBIF results through a ripple-based visualization.
 
-The picture hides several details. It only uses the 300 records returned by this API request, rather than all bird observations in GBIF. It also combines records with the same species name into one total, so it does not show the locations, dates, observers, or individual occurrence records. Records without a species name are not included in the chart.
+Each ripple represents a bird species, and the patterns are generated from the frequency of recorded observations. The visualization converts numerical species records into circular structures, creating a different way to observe variations between species.
+
+The picture also hides several details. It only represents the 300 records returned by this API request, rather than all bird observations in GBIF. It does not show the exact locations, dates, or individual observation events. Records without species information are not included.
 
 ## Run it
 
 ```text
 uv run fetch.py
-uv run plot.py
-```
+
+uv run ripple.py
