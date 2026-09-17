@@ -10,6 +10,12 @@ would do, silently drop the rows it could not parse? -->
 
 ## Tools
 
+I used ChatGPT to help me understand the assignment instructions, find a suitable GBIF data source, and write and revise the Python code for fetching and plotting the data. I used VS Code to edit and run the scripts, and GitHub to store the repository and check the submitted files.
+
 ## Kept
 
+I kept the suggestion to count the scientific names in the GBIF occurrence records and show the ten most frequent species as a horizontal bar chart. This worked well because the JSON data contains scientific names, and the bar chart makes the differences in record counts easy to compare.
+
 ## Rejected
+
+I rejected the original template's Hong Kong temperature data and line-chart example because it was only an example and did not represent my chosen phenomenon. I replaced it with bird occurrence data from GBIF and used a bar chart that better fits categorical species counts.
