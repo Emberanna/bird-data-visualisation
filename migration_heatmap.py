@@ -1,3 +1,12 @@
+# /// script
+# requires-python = ">=3.10,<3.14"
+# dependencies = [
+#     "cartopy",
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+# ]
+# ///
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

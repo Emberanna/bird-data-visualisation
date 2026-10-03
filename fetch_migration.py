@@ -1,3 +1,9 @@
+# /// script
+# requires-python = ">=3.10,<3.14"
+# dependencies = [
+#     "pandas",
+# ]
+# ///
 import pandas as pd
 
 # Load the two original datasets

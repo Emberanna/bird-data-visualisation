@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.10,<3.14"
+# dependencies = [
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+# ]
+# ///
 import os
 import calendar
 

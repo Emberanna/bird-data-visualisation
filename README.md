@@ -107,3 +107,39 @@ Although the dataset contains a large number of GPS records, the final map still
 This made me realise that the problem may not simply be about visual styling. It may also relate to how the GPS data is spatially distributed, how overlapping records are aggregated, and how the data is mapped to visual elements.
 
 In future iterations, I would like to investigate why a large dataset can still appear visually sparse and explore better ways to represent overlapping or highly concentrated GPS records without misrepresenting the original data.
+
+---
+
+## Week 04 — Interactive Migration
+
+After developing the static migration visualisation, I extended the project into an interactive version.
+
+### Interaction Promise
+
+> When I select a year or month, the interface updates the Brown Pelican migration trajectory for that period. When I click a daily point, the interface shows the movement information for that specific day.
+
+### Input, State, and Response
+
+**Input:**  
+The user can select all years, an individual year, or a month. The user can also click a daily point on the map and use Play or Pause to explore the migration over time.
+
+**State:**  
+The interface keeps track of the currently selected year, month, day, and animation position.
+
+**Response:**  
+The map updates the visible migration trajectory according to the selected period. Clicking a daily point displays its date, daily movement distance, and number of GPS records.
+
+### Interaction Design
+
+I used event callbacks rather than continuously polling for user input. The interface only responds when the user performs an action, such as selecting a year, choosing a month, clicking a point, or pressing Play or Pause.
+
+The three years can first be viewed together as a static comparison. Selecting a year isolates that year's trajectory, while selecting a month filters the visible data to that period. In the all-years view, selecting a month allows the same month to be compared across 2013, 2014, and 2015.
+
+The Play function automatically moves through the tracked days of a selected year. During playback, the date, movement distance, and number of GPS records update with the trajectory. Pause stops the animation at its current position, and Play continues from that position.
+
+This interactive version developed the static visualisation from Week 03 into a tool for exploring the migration data at different temporal scales.
+
+### Run the Interactive Visualisation
+
+```bash
+uv run interactive_migration.py
